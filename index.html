@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CrystalsCollector Game</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+  	<h1>Wins: <span id="wins"></span></h1>
+  	<h1>Losses: <span id="losses"></span></h1>
+  	<h1>Number to Guess: <span id="numberToGuess"></span></h1>
+
+  	<div id="crystalContainer">
+  		<button>
+  			<img id="crystal1" class="crystalImage" src="https://vignette.wikia.nocookie.net/steven-universe/images/f/f0/Steven_Shield_WD.png/revision/latest/scale-to-width-down/350?cb=20160406110631" width="75px" height="auto">
+  		</button>
+  		<button>
+  			<img id="crystal2" class="crystalImage" src="https://vignette1.wikia.nocookie.net/steven-universe/images/2/2e/Amethyst.png/revision/latest?cb=20140805021729" width="75px" height="auto">
+  		</button>
+  		<button>
+  			<img id="crystal3" id="crystal1"class="crystalImage" src="http://vignette3.wikia.nocookie.net/steven-universe/images/7/7c/Pearl_Sitting_Recolor.png/revision/latest?cb=20160221085844" width="75px" height="auto">
+  		</button>
+  		<button>
+  			<img id="crystal4" class="crystalImage" src="http://vignette3.wikia.nocookie.net/steven-universe/images/3/3d/First_Garnet.png/revision/latest?cb=20160105054353" width="75px" height="auto">
+  		</button>
+  	</div>
+
+  	<h1>Your total score is: <span id="totalScore"></span></h1>
+
+  	<script type="text/javascript">
+  		
+  		
+  		$( document ).ready( function() {
+
+  			var crystalsCollectorGame = {
+
+  				wins: 0,
+  				losses: 0,
+  				numberToGuess: Math.floor(Math.random() * 101) + 19,
+  				totalScore: 0,
+
+  				newRound: function () {
+
+		  			//Getting a random integer between two values:
+		  			//Math.floor(Math.random() * (max - min)) + min; 
+		  			//The maximum is exclusive and the minimum is inclusive
+		  			numberToGuess = Math.floor(Math.random() * 101) + 19;
+		  			var crystal1 = Math.floor(Math.random() * 11) + 1;
+		  			var crystal2 = Math.floor(Math.random() * 11) + 1;
+		  			var crystal3 = Math.floor(Math.random() * 11) + 1;
+		  			var crystal4 = Math.floor(Math.random() * 11) + 1;
+		  			this.totalScore = 0;
+
+		  			var crystalArray = [crystal1, crystal2, crystal3, crystal4]
+
+		  			$("#wins").text(this.wins);
+		  			$("#losses").text(this.losses);
+		  			$("#numberToGuess").text(numberToGuess);
+		  			$("#totalScore").text(this.totalScore);
+
+		  			for (var i = 1; i <= crystalArray.length; i++) {
+
+		  				$("#crystal" + i).attr("data-crystalvalue", eval("crystal" + i));
+
+
+		  			};
+
+  				},
+
+  				addGemValues: function(crystalImage) {
+
+  					var crystalValue = parseInt(($(crystalImage).data("crystalvalue")));
+
+  					this.totalScore += crystalValue;
+
+  					$("#totalScore").text(this.totalScore);
+
+  				},
+
+  				endRound: function() {
+
+  					if(this.totalScore === numberToGuess) {
+
+  						this.wins ++;
+  						$("#wins").text(this.wins);
+  						crystalsCollectorGame.newRound();
+
+  					};
+
+  					if (this.totalScore > numberToGuess) {
+
+  						this.losses ++;
+  						$("#losses").text(this.losses);
+  						crystalsCollectorGame.newRound();
+
+  					};
+
+  				},
+
+  			};
+
+  			crystalsCollectorGame.newRound();
+
+  			$(".crystalImage").on("click", function() {
+
+  				crystalsCollectorGame.addGemValues(this);
+  				crystalsCollectorGame.endRound();
+
+  			});
+
+		});
+
+  	</script>
+  
+  </body>
+</html>
